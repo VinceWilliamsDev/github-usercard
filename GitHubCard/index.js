@@ -4,6 +4,14 @@
     https://api.github.com/users/<your name>
 */
 
+axios.get("https://api.github.com/users/VinceWilliamsDev")
+  .then(response => {
+    const card = cardMaker(response)
+    document.querySelector(".cards").appendChild(card)
+  })
+  .catch(err => {
+    console.log("unable to create the card")
+  })
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -49,6 +57,52 @@ const followersArray = [];
       </div>
     </div>
 */
+
+function cardMaker(githubProfile) {
+  const cardWrapper = document.createElement("div")
+  const userImg = document.createElement("img")
+  const userInfoWrapper = document.createElement("div")
+  const userHeader = document.createElement("h3")
+  const userName = document.createElement("p")
+  const location = document.createElement("p")
+  const profile = document.createElement("p")
+  const profileURL = document.createElement("a")
+  const followerCount = document.createElement("p")
+  const followingCount = document.createElement("p")
+  const bio = document.createElement("p")
+
+  // class names
+  cardWrapper.className = "card"
+  userInfoWrapper.className = "card-info"
+  userHeader.className = "name"
+  userName.className = "username"
+
+  //other attributes
+  userImg.src = `${githubProfile.data.avatar_url}`
+  profileURL.href = `${githubProfile.data.html_url}`
+
+  // text content
+  userHeader.textContent = `${githubProfile.data.name}`
+  userName.textContent = `${githubProfile.data.login}`
+  location.textContent = `Location: ${githubProfile.data.location}`
+  profileURL.textContent = `Profile: ${githubProfile.data.html_url}`
+  followerCount.textContent = `Followers: ${githubProfile.data.followers}`
+  followingCount.textContent = `Following: ${githubProfile.data.following}`
+  bio.textContent = `${githubProfile.data.bio}`
+
+  cardWrapper.appendChild(userImg)
+  cardWrapper.appendChild(userInfoWrapper)
+  userInfoWrapper.appendChild(userHeader)
+  userInfoWrapper.appendChild(userName)
+  userInfoWrapper.appendChild(location)
+  userInfoWrapper.appendChild(profile)
+  profile.appendChild(profileURL)
+  userInfoWrapper.appendChild(followerCount)
+  userInfoWrapper.appendChild(followingCount)
+  userInfoWrapper.appendChild(bio)
+
+  return cardWrapper
+}
 
 /*
   List of LS Instructors Github username's:
